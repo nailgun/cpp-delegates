@@ -260,117 +260,117 @@ inline Delegate<Return>* ConstMethodDelegate<Class,Return>::copy() const
 
 
 template<class Class, class Return, class Arg1, class Arg2, class Arg3>
-inline MethodDelegate<Class,Return,Arg1,Arg2,Arg3>
+inline MethodDelegate<Class,Return,Arg1,Arg2,Arg3>*
 delegate(Class* obj, Return (Class::*m)(Arg1,Arg2,Arg3))
 {
-    return MethodDelegate<Class,Return,Arg1,Arg2,Arg3>(obj, m);
+    return new MethodDelegate<Class,Return,Arg1,Arg2,Arg3>(obj, m);
 }
 
 template<class Class, class Return, class Arg1, class Arg2>
-inline MethodDelegate<Class,Return,Arg1,Arg2>
+inline MethodDelegate<Class,Return,Arg1,Arg2>*
 delegate(Class* obj, Return (Class::*m)(Arg1,Arg2))
 {
-    return MethodDelegate<Class,Return,Arg1,Arg2>(obj, m);
+    return new MethodDelegate<Class,Return,Arg1,Arg2>(obj, m);
 }
 
 template<class Class, class Return, class Arg1>
-inline MethodDelegate<Class,Return,Arg1>
+inline MethodDelegate<Class,Return,Arg1>*
 delegate(Class* obj, Return (Class::*m)(Arg1))
 {
-    return MethodDelegate<Class,Return,Arg1>(obj, m);
+    return new MethodDelegate<Class,Return,Arg1>(obj, m);
 }
 
 template<class Class, class Return>
-inline MethodDelegate<Class,Return>
+inline MethodDelegate<Class,Return>*
 delegate(Class* obj, Return (Class::*m)())
 {
-    return MethodDelegate<Class,Return>(obj, m);
+    return new MethodDelegate<Class,Return>(obj, m);
 }
 
 template<class Class, class Return, class Arg1, class Arg2, class Arg3>
-inline ConstMethodDelegate<Class,Return,Arg1,Arg2,Arg3>
+inline ConstMethodDelegate<Class,Return,Arg1,Arg2,Arg3>*
 delegate(Class* obj, Return (Class::*m)(Arg1,Arg2,Arg3) const)
 {
-    return ConstMethodDelegate<Class,Return,Arg1,Arg2,Arg3>(obj, m);
+    return new ConstMethodDelegate<Class,Return,Arg1,Arg2,Arg3>(obj, m);
 }
 
 template<class Class, class Return, class Arg1, class Arg2>
-inline ConstMethodDelegate<Class,Return,Arg1,Arg2>
+inline ConstMethodDelegate<Class,Return,Arg1,Arg2>*
 delegate(Class* obj, Return (Class::*m)(Arg1,Arg2) const)
 {
-    return ConstMethodDelegate<Class,Return,Arg1,Arg2>(obj, m);
+    return new ConstMethodDelegate<Class,Return,Arg1,Arg2>(obj, m);
 }
 
 template<class Class, class Return, class Arg1>
-inline ConstMethodDelegate<Class,Return,Arg1>
+inline ConstMethodDelegate<Class,Return,Arg1>*
 delegate(Class* obj, Return (Class::*m)(Arg1) const)
 {
-    return ConstMethodDelegate<Class,Return,Arg1>(obj, m);
+    return new ConstMethodDelegate<Class,Return,Arg1>(obj, m);
 }
 
 template<class Class, class Return>
-inline ConstMethodDelegate<Class,Return>
+inline ConstMethodDelegate<Class,Return>*
 delegate(Class* obj, Return (Class::*m)() const)
 {
-    return ConstMethodDelegate<Class,Return>(obj, m);
+    return new ConstMethodDelegate<Class,Return>(obj, m);
 }
 
 #if defined(DELEGATE_DEFINE_SLOTS)
 
 template<class Class, class Arg1, class Arg2, class Arg3>
-inline MethodDelegate<Class,void,Arg1,Arg2,Arg3>
+inline MethodDelegate<Class,void,Arg1,Arg2,Arg3>*
 slot(Class* obj, void (Class::*m)(Arg1,Arg2,Arg3))
 {
-    return MethodDelegate<Class,void,Arg1,Arg2,Arg3>(obj, m);
+    return new MethodDelegate<Class,void,Arg1,Arg2,Arg3>(obj, m);
 }
 
 template<class Class, class Arg1, class Arg2>
-inline MethodDelegate<Class,void,Arg1,Arg2>
+inline MethodDelegate<Class,void,Arg1,Arg2>*
 slot(Class* obj, void (Class::*m)(Arg1,Arg2))
 {
-    return MethodDelegate<Class,void,Arg1,Arg2>(obj, m);
+    return new MethodDelegate<Class,void,Arg1,Arg2>(obj, m);
 }
 
 template<class Class, class Arg1>
-inline MethodDelegate<Class,void,Arg1>
+inline MethodDelegate<Class,void,Arg1>*
 slot(Class* obj, void (Class::*m)(Arg1))
 {
-    return MethodDelegate<Class,void,Arg1>(obj, m);
+    return new MethodDelegate<Class,void,Arg1>(obj, m);
 }
 
 template<class Class>
-inline MethodDelegate<Class,void>
+inline MethodDelegate<Class,void>*
 slot(Class* obj, void (Class::*m)())
 {
-    return MethodDelegate<Class,void>(obj, m);
+    return new MethodDelegate<Class,void>(obj, m);
 }
 
 template<class Class, class Arg1, class Arg2, class Arg3>
-inline ConstMethodDelegate<Class,void,Arg1,Arg2,Arg3>
+inline ConstMethodDelegate<Class,void,Arg1,Arg2,Arg3>*
 slot(const Class* obj, void (Class::*m)(Arg1,Arg2,Arg3) const)
 {
-    return ConstMethodDelegate<Class,void,Arg1,Arg2,Arg3>(obj, m);
+    return new ConstMethodDelegate<Class,void,Arg1,Arg2,Arg3>(obj, m);
 }
 
 template<class Class, class Arg1, class Arg2>
-inline ConstMethodDelegate<Class,void,Arg1,Arg2>
+inline ConstMethodDelegate<Class,void,Arg1,Arg2>*
 slot(const Class* obj, void (Class::*m)(Arg1,Arg2) const)
 {
-    return ConstMethodDelegate<Class,void,Arg1,Arg2>(obj, m);
+    return new ConstMethodDelegate<Class,void,Arg1,Arg2>(obj, m);
 }
 
 template<class Class, class Arg1>
-inline ConstMethodDelegate<Class,void,Arg1>
+inline ConstMethodDelegate<Class,void,Arg1>*
 slot(const Class* obj, void (Class::*m)(Arg1) const)
 {
-    return ConstMethodDelegate<Class,void,Arg1>(obj, m);
+    return new ConstMethodDelegate<Class,void,Arg1>(obj, m);
 }
 
 template<class Class>
-inline ConstMethodDelegate<Class,void>
+inline ConstMethodDelegate<Class,void>*
 slot(const Class* obj, void (Class::*m)() const)
 {
-    return ConstMethodDelegate<Class,void>(obj, m);
+    return new ConstMethodDelegate<Class,void>(obj, m);
 }
 
 #endif // defined(DELEGATE_DEFINE_SLOTS)

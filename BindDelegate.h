@@ -239,45 +239,45 @@ inline Delegate<Return,Arg1,Arg2>* Binder3rdDelegate<Return,Arg1,Arg2,Arg3>::cop
 }
 
 template<class Return, class Arg1, class Arg2, class Arg3>
-inline Binder1stDelegate<Return,Arg1,Arg2,Arg3>
-bind1st(const Delegate<Return,Arg1,Arg2,Arg3>& d, Arg1 arg1)
+inline Binder1stDelegate<Return,Arg1,Arg2,Arg3>*
+bind1st(const Delegate<Return,Arg1,Arg2,Arg3>* d, Arg1 arg1)
 {
-    return Binder1stDelegate<Return,Arg1,Arg2,Arg3>(d, arg1);
+    return new Binder1stDelegate<Return,Arg1,Arg2,Arg3>(*d, arg1);
 }
 
 template<class Return, class Arg1, class Arg2>
-inline Binder1stDelegate<Return,Arg1,Arg2>
-bind1st(const Delegate<Return,Arg1,Arg2>& d, Arg1 arg1)
+inline Binder1stDelegate<Return,Arg1,Arg2>*
+bind1st(const Delegate<Return,Arg1,Arg2>* d, Arg1 arg1)
 {
-    return Binder1stDelegate<Return,Arg1,Arg2>(d, arg1);
+    return new Binder1stDelegate<Return,Arg1,Arg2>(*d, arg1);
 }
 
 template<class Return, class Arg1>
-inline Binder1stDelegate<Return,Arg1>
-bind1st(const Delegate<Return,Arg1>& d, Arg1 arg1)
+inline Binder1stDelegate<Return,Arg1>*
+bind1st(const Delegate<Return,Arg1>* d, Arg1 arg1)
 {
-    return Binder1stDelegate<Return,Arg1>(d, arg1);
+    return new Binder1stDelegate<Return,Arg1>(*d, arg1);
 }
 
 template<class Return, class Arg1, class Arg2, class Arg3>
-inline Binder2ndDelegate<Return,Arg1,Arg2,Arg3>
-bind2nd(const Delegate<Return,Arg1,Arg2,Arg3>& d, Arg2 arg2)
+inline Binder2ndDelegate<Return,Arg1,Arg2,Arg3>*
+bind2nd(const Delegate<Return,Arg1,Arg2,Arg3>* d, Arg2 arg2)
 {
-    return Binder2ndDelegate<Return,Arg1,Arg2,Arg3>(d, arg2);
+    return new Binder2ndDelegate<Return,Arg1,Arg2,Arg3>(*d, arg2);
 }
 
 template<class Return, class Arg1, class Arg2>
-inline Binder2ndDelegate<Return,Arg1,Arg2>
-bind2nd(const Delegate<Return,Arg1,Arg2>& d, Arg2 arg2)
+inline Binder2ndDelegate<Return,Arg1,Arg2>*
+bind2nd(const Delegate<Return,Arg1,Arg2>* d, Arg2 arg2)
 {
-    return Binder2ndDelegate<Return,Arg1,Arg2>(d, arg2);
+    return new Binder2ndDelegate<Return,Arg1,Arg2>(*d, arg2);
 }
 
 template<class Return, class Arg1, class Arg2, class Arg3>
-inline Binder3rdDelegate<Return,Arg1,Arg2,Arg3>
-bind3rd(const Delegate<Return,Arg1,Arg2,Arg3>& d, Arg3 arg3)
+inline Binder3rdDelegate<Return,Arg1,Arg2,Arg3>*
+bind3rd(const Delegate<Return,Arg1,Arg2,Arg3>* d, Arg3 arg3)
 {
-    return Binder3rdDelegate<Return,Arg1,Arg2,Arg3>(d, arg3);
+    return new Binder3rdDelegate<Return,Arg1,Arg2,Arg3>(*d, arg3);
 }
 
 #endif /* BIND_DELEGATE_H_ */

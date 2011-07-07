@@ -129,60 +129,60 @@ inline Delegate<Return>* StaticDelegate<Return>::copy() const
 
 
 template<class Return, class Arg1, class Arg2, class Arg3>
-inline StaticDelegate<Return,Arg1,Arg2,Arg3>
+inline StaticDelegate<Return,Arg1,Arg2,Arg3>*
 delegate(Return (*f)(Arg1,Arg2,Arg3))
 {
-    return StaticDelegate<Return,Arg1,Arg2,Arg3>(f);
+    return new StaticDelegate<Return,Arg1,Arg2,Arg3>(f);
 }
 
 template<class Return, class Arg1, class Arg2>
-inline StaticDelegate<Return,Arg1,Arg2>
+inline StaticDelegate<Return,Arg1,Arg2>*
 delegate(Return (*f)(Arg1,Arg2))
 {
-    return StaticDelegate<Return,Arg1,Arg2>(f);
+    return new StaticDelegate<Return,Arg1,Arg2>(f);
 }
 
 template<class Return, class Arg1>
-inline StaticDelegate<Return,Arg1>
+inline StaticDelegate<Return,Arg1>*
 delegate(Return (*f)(Arg1))
 {
-    return StaticDelegate<Return,Arg1>(f);
+    return new StaticDelegate<Return,Arg1>(f);
 }
 
 template<class Return>
-inline StaticDelegate<Return>
+inline StaticDelegate<Return>*
 delegate(Return (*f)())
 {
-    return StaticDelegate<Return>(f);
+    return new StaticDelegate<Return>(f);
 }
 
 #if defined(DELEGATE_DEFINE_SLOTS)
 
 template<class Arg1, class Arg2, class Arg3>
-inline StaticDelegate<void,Arg1,Arg2,Arg3>
+inline StaticDelegate<void,Arg1,Arg2,Arg3>*
 slot(void (*f)(Arg1,Arg2,Arg3))
 {
-    return StaticDelegate<void,Arg1,Arg2,Arg3>(f);
+    return new StaticDelegate<void,Arg1,Arg2,Arg3>(f);
 }
 
 template<class Arg1, class Arg2>
-inline StaticDelegate<void,Arg1,Arg2>
+inline StaticDelegate<void,Arg1,Arg2>*
 slot(void (*f)(Arg1,Arg2))
 {
-    return StaticDelegate<void,Arg1,Arg2>(f);
+    return new StaticDelegate<void,Arg1,Arg2>(f);
 }
 
 template<class Arg1>
-inline StaticDelegate<void,Arg1>
+inline StaticDelegate<void,Arg1>*
 slot(void (*f)(Arg1))
 {
-    return StaticDelegate<void,Arg1>(f);
+    return new StaticDelegate<void,Arg1>(f);
 }
 
-inline StaticDelegate<void>
+inline StaticDelegate<void>*
 slot(void (*f)())
 {
-    return StaticDelegate<void>(f);
+    return new StaticDelegate<void>(f);
 }
 
 #endif // defined(DELEGATE_DEFINE_SLOTS)
