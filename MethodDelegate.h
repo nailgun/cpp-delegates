@@ -315,6 +315,8 @@ delegate(Class* obj, Return (Class::*m)() const)
     return ConstMethodDelegate<Class,Return>(obj, m);
 }
 
+#if defined(DELEGATE_DEFINE_SLOTS)
+
 template<class Class, class Arg1, class Arg2, class Arg3>
 inline MethodDelegate<Class,void,Arg1,Arg2,Arg3>
 slot(Class* obj, void (Class::*m)(Arg1,Arg2,Arg3))
@@ -370,5 +372,7 @@ slot(const Class* obj, void (Class::*m)() const)
 {
     return ConstMethodDelegate<Class,void>(obj, m);
 }
+
+#endif // defined(DELEGATE_DEFINE_SLOTS)
 
 #endif /* METHOD_DELEGATE_H_ */

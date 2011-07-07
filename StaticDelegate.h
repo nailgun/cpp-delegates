@@ -156,6 +156,8 @@ delegate(Return (*f)())
     return StaticDelegate<Return>(f);
 }
 
+#if defined(DELEGATE_DEFINE_SLOTS)
+
 template<class Arg1, class Arg2, class Arg3>
 inline StaticDelegate<void,Arg1,Arg2,Arg3>
 slot(void (*f)(Arg1,Arg2,Arg3))
@@ -182,5 +184,7 @@ slot(void (*f)())
 {
     return StaticDelegate<void>(f);
 }
+
+#endif // defined(DELEGATE_DEFINE_SLOTS)
 
 #endif /* STATIC_DELEGATE_H_ */
