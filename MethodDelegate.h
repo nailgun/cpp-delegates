@@ -9,12 +9,12 @@ class MethodDelegate : public Delegate<Return,Arg1,Arg2,Arg3>
 public:
     typedef Return (Class::*Signature)(Arg1,Arg2,Arg3);
     MethodDelegate(Class* obj, Signature m);
-    virtual Return operator()(Arg1 arg1, Arg2 arg2, Arg3 arg3) const;
+    virtual Return call(Arg1 arg1, Arg2 arg2, Arg3 arg3) const;
     virtual Delegate<Return,Arg1,Arg2,Arg3>* copy() const;
 
 private:
-    Class* 		object;
-    Signature	method;
+    Class* 		object_;
+    Signature	method_;
 };
 
 template<class Class, class Return, class Arg1, class Arg2>
@@ -23,12 +23,12 @@ class MethodDelegate<Class,Return,Arg1,Arg2,void> : public Delegate<Return,Arg1,
 public:
     typedef Return (Class::*Signature)(Arg1,Arg2);
     MethodDelegate(Class* obj, Signature m);
-    virtual Return operator()(Arg1 arg1, Arg2 arg2) const;
+    virtual Return call(Arg1 arg1, Arg2 arg2) const;
     virtual Delegate<Return,Arg1,Arg2>* copy() const;
 
 private:
-    Class* 		object;
-    Signature	method;
+    Class* 		object_;
+    Signature	method_;
 };
 
 template<class Class, class Return, class Arg1>
@@ -37,12 +37,12 @@ class MethodDelegate<Class,Return,Arg1,void,void> : public Delegate<Return,Arg1>
 public:
     typedef Return (Class::*Signature)(Arg1);
     MethodDelegate(Class* obj, Signature m);
-    virtual Return operator()(Arg1 arg1) const;
+    virtual Return call(Arg1 arg1) const;
     virtual Delegate<Return,Arg1>* copy() const;
 
 private:
-    Class* 		object;
-    Signature	method;
+    Class* 		object_;
+    Signature	method_;
 };
 
 template<class Class, class Return>
@@ -51,12 +51,12 @@ class MethodDelegate<Class,Return,void,void,void> : public Delegate<Return>
 public:
     typedef Return (Class::*Signature)();
     MethodDelegate(Class* obj, Signature m);
-    virtual Return operator()() const;
+    virtual Return call() const;
     virtual Delegate<Return>* copy() const;
 
 private:
-    Class* 		object;
-    Signature	method;
+    Class* 		object_;
+    Signature	method_;
 };
 
 template<class Class, class Return, class Arg1=void, class Arg2=void, class Arg3=void>
@@ -65,12 +65,12 @@ class ConstMethodDelegate : public Delegate<Return,Arg1,Arg2,Arg3>
 public:
     typedef Return (Class::*Signature)(Arg1,Arg2,Arg3) const;
     ConstMethodDelegate(const Class* obj, Signature m);
-    virtual Return operator()(Arg1 arg1, Arg2 arg2, Arg3 arg3) const;
+    virtual Return call(Arg1 arg1, Arg2 arg2, Arg3 arg3) const;
     virtual Delegate<Return,Arg1,Arg2,Arg3>* copy() const;
 
 private:
-    const Class* 	object;
-    Signature		method;
+    const Class* 	object_;
+    Signature		method_;
 };
 
 template<class Class, class Return, class Arg1, class Arg2>
@@ -79,12 +79,12 @@ class ConstMethodDelegate<Class,Return,Arg1,Arg2,void> : public Delegate<Return,
 public:
     typedef Return (Class::*Signature)(Arg1,Arg2) const;
     ConstMethodDelegate(const Class* obj, Signature m);
-    virtual Return operator()(Arg1 arg1, Arg2 arg2) const;
+    virtual Return call(Arg1 arg1, Arg2 arg2) const;
     virtual Delegate<Return,Arg1,Arg2>* copy() const;
 
 private:
-    const Class* 	object;
-    Signature		method;
+    const Class* 	object_;
+    Signature		method_;
 };
 
 template<class Class, class Return, class Arg1>
@@ -93,12 +93,12 @@ class ConstMethodDelegate<Class,Return,Arg1,void,void> : public Delegate<Return,
 public:
     typedef Return (Class::*Signature)(Arg1) const;
     ConstMethodDelegate(const Class* obj, Signature m);
-    virtual Return operator()(Arg1 arg1) const;
+    virtual Return call(Arg1 arg1) const;
     virtual Delegate<Return,Arg1>* copy() const;
 
 private:
-    const Class* 	object;
-    Signature		method;
+    const Class* 	object_;
+    Signature		method_;
 };
 
 template<class Class, class Return>
@@ -107,24 +107,23 @@ class ConstMethodDelegate<Class,Return,void,void,void> : public Delegate<Return>
 public:
     typedef Return (Class::*Signature)() const;
     ConstMethodDelegate(const Class* obj, Signature m);
-    virtual Return operator()() const;
+    virtual Return call() const;
     virtual Delegate<Return>* copy() const;
 private:
-    const Class* 	object;
-    Signature		method;
+    const Class* 	object_;
+    Signature		method_;
 };
 
 template<class Class, class Return, class Arg1, class Arg2, class Arg3>
 inline MethodDelegate<Class,Return,Arg1,Arg2,Arg3>::MethodDelegate(Class* obj, Signature m)
+    : object_(obj), method_(m)
 {
-    object = obj;
-    method = m;
 }
 
 template<class Class, class Return, class Arg1, class Arg2, class Arg3>
-inline Return MethodDelegate<Class,Return,Arg1,Arg2,Arg3>::operator()(Arg1 arg1, Arg2 arg2, Arg3 arg3) const
+inline Return MethodDelegate<Class,Return,Arg1,Arg2,Arg3>::call(Arg1 arg1, Arg2 arg2, Arg3 arg3) const
 {
-    return (object->*method)(arg1,arg2,arg3);
+    return (object_->*method_)(arg1,arg2,arg3);
 }
 
 template<class Class, class Return, class Arg1, class Arg2, class Arg3>
@@ -135,15 +134,14 @@ inline Delegate<Return,Arg1,Arg2,Arg3>* MethodDelegate<Class,Return,Arg1,Arg2,Ar
 
 template<class Class, class Return, class Arg1, class Arg2>
 inline MethodDelegate<Class,Return,Arg1,Arg2,void>::MethodDelegate(Class* obj, Signature m)
+    : object_(obj), method_(m)
 {
-    object = obj;
-    method = m;
 }
 
 template<class Class, class Return, class Arg1, class Arg2>
-inline Return MethodDelegate<Class,Return,Arg1,Arg2,void>::operator()(Arg1 arg1, Arg2 arg2) const
+inline Return MethodDelegate<Class,Return,Arg1,Arg2,void>::call(Arg1 arg1, Arg2 arg2) const
 {
-    return (object->*method)(arg1,arg2);
+    return (object_->*method_)(arg1,arg2);
 }
 
 template<class Class, class Return, class Arg1, class Arg2>
@@ -154,15 +152,14 @@ inline Delegate<Return,Arg1,Arg2>* MethodDelegate<Class,Return,Arg1,Arg2>::copy(
 
 template<class Class, class Return, class Arg1>
 inline MethodDelegate<Class,Return,Arg1,void,void>::MethodDelegate(Class* obj, Signature m)
+    : object_(obj), method_(m)
 {
-    object = obj;
-    method = m;
 }
 
 template<class Class, class Return, class Arg1>
-inline Return MethodDelegate<Class,Return,Arg1,void,void>::operator()(Arg1 arg1) const
+inline Return MethodDelegate<Class,Return,Arg1,void,void>::call(Arg1 arg1) const
 {
-    return (object->*method)(arg1);
+    return (object_->*method_)(arg1);
 }
 
 template<class Class, class Return, class Arg1>
@@ -173,15 +170,14 @@ inline Delegate<Return,Arg1>* MethodDelegate<Class,Return,Arg1>::copy() const
 
 template<class Class, class Return>
 inline MethodDelegate<Class,Return,void,void,void>::MethodDelegate(Class* obj, Signature m)
+    : object_(obj), method_(m)
 {
-    object = obj;
-    method = m;
 }
 
 template<class Class, class Return>
-inline Return MethodDelegate<Class,Return,void,void,void>::operator()() const
+inline Return MethodDelegate<Class,Return,void,void,void>::call() const
 {
-    return (object->*method)();
+    return (object_->*method_)();
 }
 
 template<class Class, class Return>
@@ -192,15 +188,14 @@ inline Delegate<Return>* MethodDelegate<Class,Return>::copy() const
 
 template<class Class, class Return, class Arg1, class Arg2, class Arg3>
 inline ConstMethodDelegate<Class,Return,Arg1,Arg2,Arg3>::ConstMethodDelegate(const Class* obj, Signature m)
+    : object_(obj), method_(m)
 {
-    object = obj;
-    method = m;
 }
 
 template<class Class, class Return, class Arg1, class Arg2, class Arg3>
-inline Return ConstMethodDelegate<Class,Return,Arg1,Arg2,Arg3>::operator()(Arg1 arg1, Arg2 arg2, Arg3 arg3) const
+inline Return ConstMethodDelegate<Class,Return,Arg1,Arg2,Arg3>::call(Arg1 arg1, Arg2 arg2, Arg3 arg3) const
 {
-    return (object->*method)(arg1,arg2,arg3);
+    return (object_->*method_)(arg1,arg2,arg3);
 }
 
 template<class Class, class Return, class Arg1, class Arg2, class Arg3>
@@ -211,15 +206,14 @@ inline Delegate<Return,Arg1,Arg2,Arg3>* ConstMethodDelegate<Class,Return,Arg1,Ar
 
 template<class Class, class Return, class Arg1, class Arg2>
 inline ConstMethodDelegate<Class,Return,Arg1,Arg2,void>::ConstMethodDelegate(const Class* obj, Signature m)
+    : object_(obj), method_(m)
 {
-    object = obj;
-    method = m;
 }
 
 template<class Class, class Return, class Arg1, class Arg2>
-inline Return ConstMethodDelegate<Class,Return,Arg1,Arg2,void>::operator()(Arg1 arg1, Arg2 arg2) const
+inline Return ConstMethodDelegate<Class,Return,Arg1,Arg2,void>::call(Arg1 arg1, Arg2 arg2) const
 {
-    return (object->*method)(arg1,arg2);
+    return (object_->*method_)(arg1,arg2);
 }
 
 template<class Class, class Return, class Arg1, class Arg2>
@@ -230,15 +224,14 @@ inline Delegate<Return,Arg1,Arg2>* ConstMethodDelegate<Class,Return,Arg1,Arg2>::
 
 template<class Class, class Return, class Arg1>
 inline ConstMethodDelegate<Class,Return,Arg1,void,void>::ConstMethodDelegate(const Class* obj, Signature m)
+    : object_(obj), method_(m)
 {
-    object = obj;
-    method = m;
 }
 
 template<class Class, class Return, class Arg1>
-inline Return ConstMethodDelegate<Class,Return,Arg1,void,void>::operator()(Arg1 arg1) const
+inline Return ConstMethodDelegate<Class,Return,Arg1,void,void>::call(Arg1 arg1) const
 {
-    return (object->*method)(arg1);
+    return (object_->*method_)(arg1);
 }
 
 template<class Class, class Return, class Arg1>
@@ -249,15 +242,14 @@ inline Delegate<Return,Arg1>* ConstMethodDelegate<Class,Return,Arg1>::copy() con
 
 template<class Class, class Return>
 inline ConstMethodDelegate<Class,Return,void,void,void>::ConstMethodDelegate(const Class* obj, Signature m)
+    : object_(obj), method_(m)
 {
-    object = obj;
-    method = m;
 }
 
 template<class Class, class Return>
-inline Return ConstMethodDelegate<Class,Return,void,void,void>::operator()() const
+inline Return ConstMethodDelegate<Class,Return,void,void,void>::call() const
 {
-    return (object->*method)();
+    return (object_->*method_)();
 }
 
 template<class Class, class Return>
