@@ -2,18 +2,26 @@
 #define STATIC_DELEGATE_H_
 
 #include "Delegate.h"
+#include <memory>
 
 template<class Return, class Arg1=void, class Arg2=void, class Arg3=void>
 class StaticDelegate : public Delegate<Return,Arg1,Arg2,Arg3>
 {
 public:
     typedef Return (*Signature)(Arg1,Arg2,Arg3);
-    StaticDelegate(Signature f);
-    virtual Return call(Arg1 arg1, Arg2 arg2, Arg3 arg3) const;
-    virtual Delegate<Return,Arg1,Arg2,Arg3>* copy() const;
+
+    StaticDelegate(Signature f)
+        : func_(f)
+    {
+    }
+
+    virtual Return call(Arg1 arg1, Arg2 arg2, Arg3 arg3)
+    {
+        return (*func_)(arg1,arg2,arg3);
+    }
 
 private:
-    Signature	func_;
+    Signature   func_;
 };
 
 template<class Return, class Arg1, class Arg2>
@@ -21,12 +29,19 @@ class StaticDelegate<Return,Arg1,Arg2,void> : public Delegate<Return,Arg1,Arg2>
 {
 public:
     typedef Return (*Signature)(Arg1,Arg2);
-    StaticDelegate(Signature f);
-    virtual Return call(Arg1 arg1, Arg2 arg2) const;
-    virtual Delegate<Return,Arg1,Arg2>* copy() const;
+
+    StaticDelegate(Signature f)
+        : func_(f)
+    {
+    }
+
+    virtual Return call(Arg1 arg1, Arg2 arg2)
+    {
+        return (*func_)(arg1,arg2);
+    }
 
 private:
-    Signature	func_;
+    Signature   func_;
 };
 
 template<class Return, class Arg1>
@@ -34,12 +49,19 @@ class StaticDelegate<Return,Arg1,void,void> : public Delegate<Return,Arg1>
 {
 public:
     typedef Return (*Signature)(Arg1);
-    StaticDelegate(Signature f);
-    virtual Return call(Arg1 arg1) const;
-    virtual Delegate<Return,Arg1>* copy() const;
+
+    StaticDelegate(Signature f)
+        : func_(f)
+    {
+    }
+
+    virtual Return call(Arg1 arg1)
+    {
+        return (*func_)(arg1);
+    }
 
 private:
-    Signature	func_;
+    Signature   func_;
 };
 
 template<class Return>
@@ -47,142 +69,77 @@ class StaticDelegate<Return,void,void,void> : public Delegate<Return>
 {
 public:
     typedef Return (*Signature)();
-    StaticDelegate(Signature f);
-    virtual Return call() const;
-    virtual Delegate<Return>* copy() const;
+
+    StaticDelegate(Signature f)
+        : func_(f)
+    {
+    }
+
+    virtual Return call()
+    {
+        return (*func_)();
+    }
 
 private:
-    Signature	func_;
+    Signature   func_;
 };
 
-template<class Return, class Arg1, class Arg2, class Arg3>
-inline StaticDelegate<Return,Arg1,Arg2,Arg3>::StaticDelegate(Signature f)
-    : func_(f)
-{
-}
 
 template<class Return, class Arg1, class Arg2, class Arg3>
-inline Return StaticDelegate<Return,Arg1,Arg2,Arg3>::call(Arg1 arg1, Arg2 arg2, Arg3 arg3) const
-{
-    return (*func_)(arg1,arg2,arg3);
-}
-
-template<class Return, class Arg1, class Arg2, class Arg3>
-inline Delegate<Return,Arg1,Arg2,Arg3>* StaticDelegate<Return,Arg1,Arg2,Arg3>::copy() const
-{
-    return new StaticDelegate<Return,Arg1,Arg2,Arg3>(*this);
-}
-
-template<class Return, class Arg1, class Arg2>
-inline StaticDelegate<Return,Arg1,Arg2,void>::StaticDelegate(Signature f)
-    : func_(f)
-{
-}
-
-template<class Return, class Arg1, class Arg2>
-inline Return StaticDelegate<Return,Arg1,Arg2,void>::call(Arg1 arg1, Arg2 arg2) const
-{
-    return (*func_)(arg1,arg2);
-}
-
-template<class Return, class Arg1, class Arg2>
-inline Delegate<Return,Arg1,Arg2>* StaticDelegate<Return,Arg1,Arg2>::copy() const
-{
-    return new StaticDelegate<Return,Arg1,Arg2>(*this);
-}
-
-template<class Return, class Arg1>
-inline StaticDelegate<Return,Arg1,void,void>::StaticDelegate(Signature f)
-    : func_(f)
-{
-}
-
-template<class Return, class Arg1>
-inline Return StaticDelegate<Return,Arg1,void,void>::call(Arg1 arg1) const
-{
-    return (*func_)(arg1);
-}
-
-template<class Return, class Arg1>
-inline Delegate<Return,Arg1>* StaticDelegate<Return,Arg1>::copy() const
-{
-    return new StaticDelegate<Return,Arg1>(*this);
-}
-
-template<class Return>
-inline StaticDelegate<Return,void,void,void>::StaticDelegate(Signature f)
-    : func_(f)
-{
-}
-
-template<class Return>
-inline Return StaticDelegate<Return,void,void,void>::call() const
-{
-    return (*func_)();
-}
-
-template<class Return>
-inline Delegate<Return>* StaticDelegate<Return>::copy() const
-{
-    return new StaticDelegate<Return>(*this);
-}
-
-
-template<class Return, class Arg1, class Arg2, class Arg3>
-inline StaticDelegate<Return,Arg1,Arg2,Arg3>*
+inline std::auto_ptr< Delegate<Return,Arg1,Arg2,Arg3> >
 delegate(Return (*f)(Arg1,Arg2,Arg3))
 {
-    return new StaticDelegate<Return,Arg1,Arg2,Arg3>(f);
+    return std::auto_ptr< Delegate<Return,Arg1,Arg2,Arg3> >(new StaticDelegate<Return,Arg1,Arg2,Arg3>(f));
 }
 
 template<class Return, class Arg1, class Arg2>
-inline StaticDelegate<Return,Arg1,Arg2>*
+inline std::auto_ptr< Delegate<Return,Arg1,Arg2> >
 delegate(Return (*f)(Arg1,Arg2))
 {
-    return new StaticDelegate<Return,Arg1,Arg2>(f);
+    return std::auto_ptr< Delegate<Return,Arg1,Arg2> >(new StaticDelegate<Return,Arg1,Arg2>(f));
 }
 
 template<class Return, class Arg1>
-inline StaticDelegate<Return,Arg1>*
+inline std::auto_ptr< Delegate<Return,Arg1> >
 delegate(Return (*f)(Arg1))
 {
-    return new StaticDelegate<Return,Arg1>(f);
+    return std::auto_ptr< Delegate<Return,Arg1> >(new StaticDelegate<Return,Arg1>(f));
 }
 
 template<class Return>
-inline StaticDelegate<Return>*
+inline std::auto_ptr< Delegate<Return> >
 delegate(Return (*f)())
 {
-    return new StaticDelegate<Return>(f);
+    return std::auto_ptr< Delegate<Return> >(new StaticDelegate<Return>(f));
 }
 
 #if defined(DELEGATE_DEFINE_SLOTS)
 
 template<class Arg1, class Arg2, class Arg3>
-inline StaticDelegate<void,Arg1,Arg2,Arg3>*
+inline std::auto_ptr< Delegate<void,Arg1,Arg2,Arg3> >
 slot(void (*f)(Arg1,Arg2,Arg3))
 {
-    return new StaticDelegate<void,Arg1,Arg2,Arg3>(f);
+    return delegate(f);
 }
 
 template<class Arg1, class Arg2>
-inline StaticDelegate<void,Arg1,Arg2>*
+inline std::auto_ptr< Delegate<void,Arg1,Arg2> >
 slot(void (*f)(Arg1,Arg2))
 {
-    return new StaticDelegate<void,Arg1,Arg2>(f);
+    return delegate(f);
 }
 
 template<class Arg1>
-inline StaticDelegate<void,Arg1>*
+inline std::auto_ptr< Delegate<void,Arg1> >
 slot(void (*f)(Arg1))
 {
-    return new StaticDelegate<void,Arg1>(f);
+    return delegate(f);
 }
 
-inline StaticDelegate<void>*
+inline std::auto_ptr< Delegate<void> >
 slot(void (*f)())
 {
-    return new StaticDelegate<void>(f);
+    return delegate(f);
 }
 
 #endif // defined(DELEGATE_DEFINE_SLOTS)
